@@ -3,102 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adega Conceito - Sua Adega no Boa Vista!</title>
+    <title>Corações Cadentes</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* overflow: hidden; Removido para permitir rolagem */
         }
-        .copy-success-message {
+
+        /* Estilo da Tela 1 */
+        #screen1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* Fundo preto */
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Estilo da Tela 2 */
+        #screen2 {
+            display: none; /* Escondida inicialmente */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* Fundo preto */
+            position: relative;
+            /* overflow: hidden; Removido para permitir rolagem */
+            padding: 20px; /* Adiciona um pouco de padding para o conteúdo não ficar colado nas bordas */
+            box-sizing: border-box;
+        }
+
+        /* Animação dos corações caindo */
+        .heart {
+            position: absolute;
+            color: #8B008B; /* Roxo escuro */
+            font-size: 40px; /* Aumentado para melhor visibilidade e separação */
+            animation: fall linear infinite;
+            opacity: 0;
+            pointer-events: none; /* Permite que cliques passem pelos corações */
+            z-index: 1; /* Corações atrás do conteúdo principal */
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Estilo do carrossel de imagens */
+        .image-container {
+            width: 400px; /* Largura fixa para 400px */
+            height: 400px; /* Altura fixa para 400px */
+            overflow: hidden;
+            background-color: transparent; /* Fundo transparente */
+            box-shadow: none; /* Sem sombra */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px; /* Espaçamento acima do carrossel */
+            position: relative;
+            z-index: 10; /* Garante que o carrossel fique acima dos corações */
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a imagem preencha o espaço */
+            border-radius: 50%; /* Forma oval para imagens 400x400 (círculo) */
             transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .carousel-image.active {
+            opacity: 1;
+        }
+
+        .dots-container {
+            display: flex;
+            margin-top: 20px;
+            z-index: 10; /* Garante que os pontos fiquem acima dos corações */
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #8B008B; /* Roxo ativo */
+        }
+
+        /* Estilo para o texto abaixo das fotos */
+        .love-text {
+            color: #fff;
+            text-align: center;
+            margin-top: 40px;
+            max-width: 600px; /* Limita a largura do texto para melhor leitura */
+            line-height: 1.6;
+            font-size: 1.1rem;
+            padding: 0 20px; /* Adiciona padding nas laterais em telas menores */
+            z-index: 10; /* Garante que o texto fique acima dos corações */
+        }
+
+        /* Ajustes responsivos */
+        @media (max-width: 768px) {
+            .image-container {
+                width: 300px; /* Ajusta a largura para telas menores */
+                height: 300px; /* Ajusta a altura para telas menores */
+            }
+            .heart {
+                font-size: 30px; /* Reduz o tamanho do coração em telas menores */
+            }
+            .love-text {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+<body>
 
-    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full overflow-hidden">
-        <!-- Imagem do Local (Banner) -->
-        <div class="w-full bg-gray-800">
-            <img 
-                src="https://i.imgur.com/Z0baS9v.jpeg" 
-                alt="Banner da Adega Conceito" 
-                class="w-full h-auto object-contain"
-                onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a202c/ffffff?text=Adega+Conceito';"
-            >
+    <!-- Primeira Tela -->
+    <div id="screen1" class="relative">
+        <button id="clickButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full text-2xl shadow-lg flex items-center space-x-3 transition transform hover:scale-105">
+            <span>CLIQUE</span>
+            <span class="text-purple-600 text-3xl">💜</span>
+        </button>
+    </div>
+
+    <!-- Segunda Tela -->
+    <div id="screen2">
+        <!-- Carrossel de Imagens -->
+        <div class="image-container">
+            <img src="https://i.imgur.com/5pWIzad.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/8B008B/FFFFFF?text=Erro+Foto+1';" alt="Foto 1" class="carousel-image active" data-index="0">
+            <img src="https://i.imgur.com/CmOxfxU.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/4B0082/FFFFFF?text=Erro+Foto+2';" alt="Foto 2" class="carousel-image" data-index="1">
+            <img src="https://i.imgur.com/6s0LvVL.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/6A0DAD/FFFFFF?text=Erro+Foto+3';" alt="Foto 3" class="carousel-image" data-index="2">
+            <img src="https://i.imgur.com/7PEE5DZ.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/9932CC/FFFFFF?text=Erro+Foto+4';" alt="Foto 4" class="carousel-image" data-index="3">
+        </div>
+        <div class="dots-container">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
         </div>
 
-        <!-- Conteúdo de Texto -->
-        <div class="p-6 md:p-8 text-center">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">🍺 Adega Conceito</h1>
-            <p class="text-gray-600 mb-6">
-                Encontre cervejas, destilados, com o melhor preço!
-            </p>
-
-            <!-- Endereço -->
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                <p class="font-semibold text-gray-700">Nosso Endereço:</p>
-                <p class="text-gray-600">Rua João Leite, 60 - Boa Vista, Mossoró/RN</p>
-            </div>
-
-            <!-- Botão Principal para o Mapa -->
-            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Joao+Leite,60,Boa+Vista,Mossoró,RN" target="_blank" class="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 mb-4 shadow-lg">
-                📍 Ver Localização no Mapa
-            </a>
-
-            <!-- Botão para Copiar o Link -->
-            <button id="copyButton" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
-                🔗 Copiar Link do Mapa
-            </button>
-            
-            <!-- Mensagem de Sucesso (invisível por padrão) -->
-            <div id="copySuccessMessage" class="mt-4 text-green-600 font-semibold opacity-0">
-                Link copiado com sucesso!
-            </div>
+        <!-- Texto abaixo das fotos -->
+        <div class="love-text">
+            Eu escolheria você, mesmo se eu estivesse do outro lado do mundo com centenas de outras pessoas, cheio de novas oportunidades. Eu escolheria você hoje, amanhã, daqui a vinte anos, em outro planeta, em outro século. Eu ainda escolheria você. Se eu pudesse escolher mil vezes, seria você mil e uma delas. Se a vida acabasse neste instante e eu só tivesse um pedido, eu escolheria você.
+            <br><br>
+            Eu te amo mais que tudo neste mundo 💜
         </div>
-
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white p-4 text-center text-sm rounded-b-2xl">
-            <p>&copy; 2025 Adega Conceito. Todos os direitos reservados.</p>
-            <p class="mt-2">Siga-nos no Instagram: 
-                <a href="https://www.instagram.com/aadegaconceito_" target="_blank" class="text-orange-400 hover:text-orange-300 font-semibold">@aadegaconceito_</a>
-            </p>
-        </footer>
     </div>
 
     <script>
-        // Função para copiar o link para a área de transferência
-        const copyButton = document.getElementById('copyButton');
-        const copySuccessMessage = document.getElementById('copySuccessMessage');
-        const mapLink = "https://www.google.com/maps/search/?api=1&query=Rua+Joao+Leite,60,Boa+Vista,Mossoró,RN";
+        const clickButton = document.getElementById('clickButton');
+        const screen1 = document.getElementById('screen1');
+        const screen2 = document.getElementById('screen2');
+        const carouselImages = document.querySelectorAll('.carousel-image');
+        const dots = document.querySelectorAll('.dot');
+        
+        // Variáveis e funções relacionadas ao player do YouTube foram removidas
+        
+        let currentImageIndex = 0;
+        let imageInterval;
+        const numberOfHearts = 10; // Mantido em 10 corações
 
-        copyButton.addEventListener('click', () => {
-            // Cria um elemento de texto temporário para copiar o conteúdo
-            const tempInput = document.createElement('input');
-            tempInput.value = mapLink;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            
-            try {
-                // Usa o método execCommand que tem melhor compatibilidade em iframes
-                document.execCommand('copy');
-                showSuccessMessage();
-            } catch (err) {
-                console.error('Erro ao copiar o link: ', err);
-            }
-            
-            document.body.removeChild(tempInput);
+        // Função para criar um coração e iniciar sua animação
+        function createAndAnimateHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💜'; // Emoji de coração roxo
+            heart.style.left = `${Math.random() * 90 + 5}vw`; // Posição horizontal aleatória, um pouco mais separada
+            heart.style.animationDuration = `${Math.random() * 5 + 5}s`; // Duração da animação mais lenta (5-10s)
+            heart.style.animationDelay = `${Math.random() * 1}s`; // Atraso para criar efeito cascata
+            screen2.appendChild(heart);
+
+            // Quando a animação terminar, remove o coração e cria um novo para manter o número fixo
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+                createAndAnimateHeart(); // Cria um novo coração para substituir o que caiu
+            });
+        }
+
+        // Atualiza a imagem ativa no carrossel
+        function updateCarousel() {
+            carouselImages.forEach((img, index) => {
+                if (index === currentImageIndex) {
+                    img.classList.add('active');
+                } else {
+                    img.classList.remove('active');
+                }
+            });
+            dots.forEach((dot, index) => {
+                if (index === currentImageIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Avança para a próxima imagem
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
+            updateCarousel();
+        }
+
+        // Inicia o carrossel automático
+        function startCarousel() {
+            imageInterval = setInterval(nextImage, 5000); // Passa a cada 5 segundos
+        }
+
+        // Lida com o clique nos pontos do carrossel
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                clearInterval(imageInterval); // Para o carrossel automático
+                currentImageIndex = parseInt(dot.dataset.index);
+                updateCarousel();
+                startCarousel(); // Reinicia o carrossel automático
+            });
         });
 
-        function showSuccessMessage() {
-            copySuccessMessage.style.opacity = '1';
+        // Evento de clique no botão "CLIQUE"
+        clickButton.addEventListener('click', () => {
+            screen1.style.opacity = '0'; // Faz a primeira tela desaparecer suavemente
             setTimeout(() => {
-                copySuccessMessage.style.opacity = '0';
-            }, 2000); // A mensagem desaparece após 2 segundos
-        }
-    </script>
+                screen1.style.display = 'none'; // Esconde a primeira tela
+                screen2.style.display = 'flex'; // Mostra a segunda tela
+                
+                // Chamada para iniciar o player do YouTube foi removida
 
+                startCarousel(); // Inicia o carrossel de imagens
+
+                // Gera o número fixo de corações
+                for (let i = 0; i < numberOfHearts; i++) {
+                    createAndAnimateHeart();
+                }
+            }, 1000); // Espera a transição de opacidade terminar (1 segundo)
+        });
+
+        // Garante que o áudio seja pausado se o usuário sair da página (opcional)
+        window.addEventListener('beforeunload', () => {
+            // Lógica para pausar o player do YouTube foi removida
+        });
+
+        // Chamada para carregar a API do YouTube foi removida
+        // window.onload = loadYouTubeAPI; 
+
+        // Inicializa o carrossel na primeira imagem ao carregar
+        updateCarousel();
+    </script>
 </body>
 </html>
